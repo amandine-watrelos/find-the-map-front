@@ -1,29 +1,38 @@
 <script>
-	export let name;
+    import Textfield from '@smui/textfield';
+    import Button, {Label} from '@smui/button';
+	export let appName = "Find the Map";
+    export let playerName = '';
+    export let gameId = '';
+
+    function goToGameCreation() {
+        alert('hey yo');
+    }
+
+    function goToLobby() {
+        alert('hey yo');
+    }
 </script>
 
-<main>
-	<h1>{name}</h1>
-</main>
+<nav>{appName}</nav>
 
-<style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
+<div class="wrapper">
 
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
+    <img src="/images/map-detouree.png" alt="map-image" id ="map-image"/>
 
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
-</style>
+    <Button on:click={goToGameCreation} variant="raised" id="create-game-button">
+        <Label>Create a new game</Label>
+    </Button>
+
+    <div id="join-game-area">
+        <p>.. or join an existing game!</p>
+        <Textfield bind:value={playerName} label="Player name"/>
+        <Textfield bind:value={gameId} label="Game ID"/>
+        <Button on:click={goToLobby} variant="raised">
+            <Label>Play</Label>
+        </Button>
+    </div>
+
+</div>
+
+
