@@ -43,10 +43,11 @@ nav {
 	height: auto;
 }
 
-#create-game-button {
+.large-button {
 	grid-column: 4;
 	grid-row: 2;
 }
+
 
 #join-game-area {
 	grid-column: 4;
