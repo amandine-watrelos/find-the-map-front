@@ -1,38 +1,14 @@
 <script>
-    import Textfield from '@smui/textfield';
-    import Button, {Label} from '@smui/button';
-	export let appName = "Find the Map";
-    export let playerName = '';
-    export let gameId = '';
+  import Navbar from './components/Navbar.svelte';
+  import Home from './components/Home.svelte';
 
-    function goToGameCreation() {
-        alert('hey yo');
-    }
-
-    function goToLobby() {
-        alert('hey yo');
-    }
+  const createGame = (e) => {
+    alert('create a game');
+  };
 </script>
 
-<nav>{appName}</nav>
+<Navbar />
 
 <div class="wrapper">
-
-    <img src="/images/map-detouree.png" alt="map-image" id ="map-image"/>
-
-    <Button on:click={goToGameCreation} variant="raised" id="create-game-button">
-        <Label>Create a new game</Label>
-    </Button>
-
-    <div id="join-game-area">
-        <p>.. or join an existing game!</p>
-        <Textfield bind:value={playerName} label="Player name"/>
-        <Textfield bind:value={gameId} label="Game ID"/>
-        <Button on:click={goToLobby} variant="raised">
-            <Label>Play</Label>
-        </Button>
-    </div>
-
+  <Home on:createGame={createGame} />
 </div>
-
-
