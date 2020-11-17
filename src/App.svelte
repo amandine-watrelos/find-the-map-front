@@ -1,38 +1,25 @@
 <script>
-    import Textfield from '@smui/textfield';
-    import Button, {Label} from '@smui/button';
-	export let appName = "Find the Map";
-    export let playerName = '';
-    export let gameId = '';
+  import Navbar from './components/Navbar.svelte';
+  import Home from './components/Home.svelte';
+  import CreateGame from './components/CreateGame.svelte';
 
-    function goToGameCreation() {
-        alert('hey yo');
-    }
+  let isCreateGame = false;
 
-    function goToLobby() {
-        alert('hey yo');
-    }
+  const createGame = () => {
+    isCreateGame = true;
+  };
+
+  const goHome = () => {
+    isCreateGame = false;
+  };
 </script>
 
-<nav>{appName}</nav>
+<Navbar />
 
 <div class="wrapper">
-
-    <img src="/images/map-detouree.png" alt="map-image" id ="map-image"/>
-
-    <Button on:click={goToGameCreation} variant="raised" id="create-game-button">
-        <Label>Create a new game</Label>
-    </Button>
-
-    <div id="join-game-area">
-        <p>.. or join an existing game!</p>
-        <Textfield bind:value={playerName} label="Player name"/>
-        <Textfield bind:value={gameId} label="Game ID"/>
-        <Button on:click={goToLobby} variant="raised">
-            <Label>Play</Label>
-        </Button>
-    </div>
-
+  {#if isCreateGame == true}
+    <CreateGame on:goHome={goHome} />
+  {:else}
+    <Home on:createGame={createGame} />
+  {/if}
 </div>
-
-
