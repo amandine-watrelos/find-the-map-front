@@ -53,3 +53,7 @@ nav {
 	grid-column: 4;
 	grid-row: 3/4;
 }
+
+fieldset {
+	border: 0;
+}
