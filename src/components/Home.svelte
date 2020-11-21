@@ -20,7 +20,7 @@
 
 <img src="/images/map-detouree.png" alt="map-image" id="map-image" />
 
-<Button on:click={goToGameCreation} variant="raised" class="large-button">
+<Button on:click={goToGameCreation} variant="raised" class="width-fit-content large-button">
   <Label>Create a new game</Label>
 </Button>
 

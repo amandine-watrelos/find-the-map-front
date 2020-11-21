@@ -3,46 +3,65 @@
   import Textfield from '@smui/textfield';
   import { createEventDispatcher } from 'svelte';
   import { onMount } from 'svelte';
+  import gameController from '../controllers/gameController';
 
   const dispatch = createEventDispatcher();
 
-  let imgUrl = "";
-  let posX = "";
-  let posY = "";
-  let mapsList = "";
+  /* TODO :
+  - handle CORS Policy
+  - config prod and local url
+  - fix html pattern not applied
+  - save a game
+   */
+
+  let mapInput = {
+      imgUrl : "",
+      posX : "",
+      posY : ""
+  };
   let game = {};
-  let isButtonEnabled = false;
+  let canAddMap = false;
+  let mapsList = "";
 
-  // handle CORS policy
-
-  onMount(() => {//config prod and local url
-    //fetch('https://find-the-map.herokuapp.com/game')
-    fetch('http://localhost:8008/game', {
-      method : 'POST'
-    })
-    .then(res => {//refacto ce then utilisé partout
-      if (!res.ok) {
-        throw new Error('Could not get JSON response.');
-      }
-      return res.json();
-    })
-    .then(data => {
-      game = data;
-    })
-    .catch(err => {
-      console.log(err);
-    });
+  onMount(() => {
+    initGame();
   });
+
+  async function initGame() {
+    try {
+      const gameCreated = await gameController.createGame();
+      game = gameCreated;
+    } catch (e) {
+      console.log('Error while game initialization',e)
+    }
+  }
+
+  async function addMap() {
+    const params = {
+      url: mapInput.imgUrl,
+      posX: mapInput.posX,
+      posY: mapInput.posY
+    };
+    try {
+      const gameUpdated = await gameController.addMap(game.id, convertToQueryParams(params));
+      game = gameUpdated;
+      resetFields();
+      canAddMap = false;
+      mapsList = convertMapListToString(game.dofusMaps);
+    } catch (e) {
+      console.log('Error while adding a map', e)
+    }
+  }
 
   function back() {
     dispatch('goHome');
   }
 
   function isFormValid() {
-    if (posX !== "" && posY !== "" && imgUrl !== "") {
-      isButtonEnabled = true;
+    if (mapInput.posX !== "" && mapInput.posY !== "" && mapInput.imgUrl !== "") {
+      canAddMap = true;
     } else {
-      isButtonEnabled = false;
+      canAddMap = false;
     }
   }
 
@@ -50,39 +69,20 @@
     return new URLSearchParams(params).toString()
   }
 
-  function addMap() {
-    const params = {
-      url: imgUrl,
-      posX: posX,
-      posY: posY
-    };
-    const queryParams = convertToQueryParams(params);
-    //let url = 'https://find-the-map.herokuapp.com/game/' + game.id;
-    fetch(`http://localhost:8008/game/${game.id}?${queryParams}`, {
-      method: 'PATCH'
-    })
-    .then(res => {
-      if (!res.ok) {
-        throw new Error('Could not get JSON response.');
-      }
-      return res.json();
-    })
-    .then(data => {
-      game = data;
-      resetFields();
-      // display maps in textarea
-      console.log(`id = ${game.id}`);
-    })
-    .catch(err => {
-      console.log(err);
+  function convertMapListToString(maps) {
+    let mapsString = "";
+    maps.forEach(map => {
+        mapsString += `${map.url}\t`;
+        mapsString += `[${map.posX},`;
+        mapsString += `${map.posY}]\r`;
     });
-    // reload maps list with game
+    return mapsString;
   }
 
   function resetFields() {
-    imgUrl = "";
-    posX = "";
-    posY = "";
+      mapInput.imgUrl = "";
+      mapInput.posX = "";
+      mapInput.posY = "";
   }
 
   function saveGame() {
@@ -90,43 +90,40 @@
   }
 </script>
 
-<Button on:click={back} variant="raised">
-  <Label>Go back to home</Label>
+<Button on:click={back} variant="raised" class="back-button">
+  <Label>Back</Label>
 </Button>
 
-<h2>Game creation</h2>
-<p>Add some maps with the link to the image that you hosted before, and the position of the map.</p>
+<div class="game-creation-title">
+  <h2>Game creation</h2>
+  <p>Add some maps with the link to the image that you hosted before, and the position of the map.</p>
+</div>
 
-<form>
-  <fieldset>
-    <div>
-      <Label>Image link</Label>
-      <Textfield on:keyup={isFormValid} bind:value={imgUrl} />
-    </div>
+<div class="add-map">
+  <div>
+    <Label>Image link</Label>
+    <Textfield on:keyup={isFormValid} bind:value={mapInput.imgUrl} />
+  </div>
 
-    <div>
-      <Label>Position</Label>
-      <Textfield on:keyup={isFormValid} bind:value={posX} variant="outlined" pattern="^-?[0-9][0-9]?$"/>
-      <Textfield on:keyup={isFormValid} bind:value={posY} variant="outlined" pattern ="^-?[0-9][0-9]?$"/>
-    </div>
+  <div>
+    <Label>Position</Label>
+    <Textfield on:keyup={isFormValid} bind:value={mapInput.posX} variant="outlined" pattern="^-?[0-9][0-9]?$"/>
+    <Textfield on:keyup={isFormValid} bind:value={mapInput.posY} variant="outlined" pattern ="^-?[0-9][0-9]?$"/>
+  </div>
 
-    {#if isButtonEnabled == true}
-      <Button on:click={addMap} variant="raised">
-        <Label>Add map</Label>
-      </Button>
-    {:else}
-      <Button on:click={addMap} variant="raised" disabled>
-        <Label>Add map</Label>
-      </Button>
-    {/if}
+  {#if canAddMap == true}
+    <Button on:click={addMap} type="button" variant="raised">
+      <Label>Add map</Label>
+    </Button>
+  {:else}
+    <Button on:click={addMap} variant="raised" disabled>
+      <Label>Add map</Label>
+    </Button>
+  {/if}
+</div>
 
-  </fieldset>
+<Textfield textarea readonly bind:value={mapsList} label="Maps list" class="maps-list"/>
 
-  <Textfield textarea disabled bind:value={mapsList} label="Maps list"/>
-
-  <Button on:click={saveGame} variant="raised">
-    <Label>Save the game and generate a code</Label><!-- disabled if maps list is empty -->
-  </Button>
-
-</form>
-
+<Button on:click={saveGame} variant="raised" class="save-game-button">
+  <Label>Save the game</Label>
+</Button>
