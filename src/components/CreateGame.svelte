@@ -3,7 +3,7 @@
   import Textfield from '@smui/textfield';
   import { createEventDispatcher } from 'svelte';
   import { onMount } from 'svelte';
-  import gameController from '../controllers/gameController';
+  import GameController from '../controllers/GameController';
 
   const dispatch = createEventDispatcher();
 
@@ -29,7 +29,7 @@
 
   async function initGame() {
     try {
-      const gameCreated = await gameController.createGame();
+      const gameCreated = await GameController.createGame();
       game = gameCreated;
     } catch (e) {
       console.log('Error while game initialization',e)
@@ -43,13 +43,22 @@
       posY: mapInput.posY
     };
     try {
-      const gameUpdated = await gameController.addMap(game.id, convertToQueryParams(params));
+      const gameUpdated = await GameController.addMap(game.id, convertToQueryParams(params));
       game = gameUpdated;
       resetFields();
-      canAddMap = false;
       mapsList = convertMapListToString(game.dofusMaps);
     } catch (e) {
       console.log('Error while adding a map', e)
+    }
+  }
+
+  async function saveGame() {
+    try {
+      const gameUpdated = await GameController.generateCode(game.id);
+      game = gameUpdated;
+      alert(`The game has been saved. Please note this code somewhere or you will lose your freshly game created : ${game.code}`);
+    } catch (e) {
+      console.log('Error while generating code', e)
     }
   }
 
@@ -58,11 +67,7 @@
   }
 
   function isFormValid() {
-    if (mapInput.posX !== "" && mapInput.posY !== "" && mapInput.imgUrl !== "") {
-      canAddMap = true;
-    } else {
-      canAddMap = false;
-    }
+    canAddMap = mapInput.posX !== "" && mapInput.posY !== "" && mapInput.imgUrl !== "" ? true : false;
   }
 
   function convertToQueryParams(params) {
@@ -80,14 +85,12 @@
   }
 
   function resetFields() {
-      mapInput.imgUrl = "";
-      mapInput.posX = "";
-      mapInput.posY = "";
+    mapInput.imgUrl = "";
+    mapInput.posX = "";
+    mapInput.posY = "";
+    canAddMap = false;
   }
 
-  function saveGame() {
-    alert("game saved, add a notification to remember to save the code or the game will be lost");
-  }
 </script>
 
 <Button on:click={back} variant="raised" class="back-button">
@@ -116,7 +119,7 @@
       <Label>Add map</Label>
     </Button>
   {:else}
-    <Button on:click={addMap} variant="raised" disabled>
+    <Button variant="raised" disabled>
       <Label>Add map</Label>
     </Button>
   {/if}
@@ -124,6 +127,13 @@
 
 <Textfield textarea readonly bind:value={mapsList} label="Maps list" class="maps-list"/>
 
-<Button on:click={saveGame} variant="raised" class="save-game-button">
-  <Label>Save the game</Label>
-</Button>
+{#if mapsList === ""}
+  <Button variant="raised" class="save-game-button" disabled>
+    <Label>Save the game</Label>
+  </Button>
+{:else}
+  <Button on:click={saveGame} variant="raised" class="save-game-button">
+    <Label>Save the game</Label>
+  </Button>
+{/if}
+

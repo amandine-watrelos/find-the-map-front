@@ -1,4 +1,4 @@
-export default class gameController {
+export default class GameController {
 
     static async createGame() {
         try {
@@ -14,6 +14,17 @@ export default class gameController {
     static async addMap(gameId, queryParams) {
         try {
             const game = await fetch(`http://localhost:8008/game/${gameId}?${queryParams}`, {
+                method: 'PATCH'
+            });
+            return game.json();
+        } catch (e) {
+            console.log('Error while fetching request',e);
+        }
+    }
+
+    static async generateCode(gameId) {
+        try {
+            const game = await fetch(`http://localhost:8008/game/${gameId}/generate`, {
                 method: 'PATCH'
             });
             return game.json();
