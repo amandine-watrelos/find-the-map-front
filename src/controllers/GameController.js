@@ -2,7 +2,7 @@ export default class GameController {
 
     static async createGame() {
         try {
-            const gameCreated = await fetch(`http://localhost:8008/game`, {
+            const gameCreated = await fetch(`${process.env.apiUrl}/game`, {
                 method: 'POST'
             });
             return gameCreated.json();
@@ -13,7 +13,7 @@ export default class GameController {
 
     static async addMap(gameId, queryParams) {
         try {
-            const game = await fetch(`http://localhost:8008/game/${gameId}?${queryParams}`, {
+            const game = await fetch(`${process.env.apiUrl}/game/${gameId}?${queryParams}`, {
                 method: 'PATCH'
             });
             return game.json();
@@ -24,7 +24,7 @@ export default class GameController {
 
     static async generateCode(gameId) {
         try {
-            const game = await fetch(`http://localhost:8008/game/${gameId}/generate`, {
+            const game = await fetch(`${process.env.apiUrl}/game/${gameId}/generate`, {
                 method: 'PATCH'
             });
             return game.json();

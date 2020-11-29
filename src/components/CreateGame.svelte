@@ -9,9 +9,7 @@
 
   /* TODO :
   - handle CORS Policy
-  - config prod and local url
   - fix html pattern not applied
-  - save a game
    */
 
   let mapInput = {

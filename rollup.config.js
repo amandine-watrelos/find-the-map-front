@@ -5,8 +5,12 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import postcss from 'rollup-plugin-postcss';
 import autoPreprocess from 'svelte-preprocess';
+import replace from '@rollup/plugin-replace';
 
 const production = !process.env.ROLLUP_WATCH;
+
+const DEV_API_URL = "http://localhost:8008";
+const PROD_API_URL = "https://find-the-map.herokuapp.com";
 
 function serve() {
 	let server;
@@ -37,7 +41,14 @@ export default {
 		name: 'app',
 		file: 'public/build/bundle.js'
 	},
-	plugins: [
+	plugins: [replace({
+		process: JSON.stringify({
+			env: {
+				isProd: production,
+				apiUrl: production ? PROD_API_URL : DEV_API_URL
+			}
+			}),
+		}),
 		svelte({
 			// enable run-time checks when not in production
 			dev: !production,
