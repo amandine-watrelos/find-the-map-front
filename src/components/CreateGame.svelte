@@ -7,10 +7,6 @@
 
   const dispatch = createEventDispatcher();
 
-  /* TODO :
-  - handle CORS Policy
-   */
-
   let mapInput = {
       imgUrl : "",
       posX : "",
@@ -52,14 +48,8 @@
     }
   }
 
-  async function saveGame() {
-    try {
-      const gameUpdated = await GameController.generateCode(game.id);
-      game = gameUpdated;
+  function displayCode() {
       alert(`The game has been saved. Please note this code somewhere or you will lose your freshly game created : ${game.code}`);
-    } catch (e) {
-      console.log('Error while generating code', e)
-    }
   }
 
   function initPositionInputEvents() {
@@ -140,7 +130,7 @@
     <Label>Save the game</Label>
   </Button>
 {:else}
-  <Button on:click={saveGame} variant="raised" class="save-game-button">
+  <Button on:click={displayCode} variant="raised" class="save-game-button">
     <Label>Save the game</Label>
   </Button>
 {/if}

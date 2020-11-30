@@ -22,15 +22,4 @@ export default class GameController {
         }
     }
 
-    static async generateCode(gameId) {
-        try {
-            const game = await fetch(`${process.env.apiUrl}/game/${gameId}/generate`, {
-                method: 'PATCH'
-            });
-            return game.json();
-        } catch (e) {
-            console.log('Error while fetching request',e);
-        }
-    }
-
 }
