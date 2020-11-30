@@ -9,7 +9,6 @@
 
   /* TODO :
   - handle CORS Policy
-  - fix html pattern not applied
    */
 
   let mapInput = {
@@ -21,8 +20,11 @@
   let canAddMap = false;
   let mapsList = "";
 
+  const positionRegex = RegExp("^-?[0-9]?[0-9]?$");
+
   onMount(() => {
     initGame();
+    initPositionInputEvents();
   });
 
   async function initGame() {
@@ -58,6 +60,14 @@
     } catch (e) {
       console.log('Error while generating code', e)
     }
+  }
+
+  function initPositionInputEvents() {
+    document.querySelectorAll(".position-input").forEach((element) => {
+      element.onkeypress = function(event) {
+        return positionRegex.test(event.key) ;
+      }
+    });
   }
 
   function back() {
@@ -108,8 +118,8 @@
 
   <div>
     <Label>Position</Label>
-    <Textfield on:keyup={isFormValid} bind:value={mapInput.posX} variant="outlined" pattern="^-?[0-9][0-9]?$"/>
-    <Textfield on:keyup={isFormValid} bind:value={mapInput.posY} variant="outlined" pattern ="^-?[0-9][0-9]?$"/>
+    <Textfield on:keyup={isFormValid} bind:value={mapInput.posX} class="position-input" onpaste="return false" variant="outlined"/>
+    <Textfield on:keyup={isFormValid} bind:value={mapInput.posY} class="position-input" onpaste="return false" variant="outlined" />
   </div>
 
   {#if canAddMap == true}
@@ -123,7 +133,7 @@
   {/if}
 </div>
 
-<Textfield textarea readonly bind:value={mapsList} label="Maps list" class="maps-list"/>
+<Textfield textarea disabled bind:value={mapsList} label="Maps list" class="maps-list"/>
 
 {#if mapsList === ""}
   <Button variant="raised" class="save-game-button" disabled>
