@@ -20,22 +20,26 @@
   <img src="/images/map-detouree.png" alt="map-image" id="map-image" class="col-md-2"/>
 
   <div class="col-md-2 text-center">
-    <button on:click={goToGameCreation} type="button" class="btn btn-primary button-margin">Create a new game</button>
+    <button on:click={goToGameCreation} type="button" class="btn">Create a new game</button>
+    <p>_________</p>
+    <form id="join-game-area">
+      <p>Join an existing game :</p>
 
-    <div id="join-game-area">
-      <p>.. or join an existing game!</p>
-
-      <div>
+      <div class="form-group">
         <label for="playerName">Player name</label>
-        <input type="text" bind:value={playerName} name="playerName" id="playerName">
+        <div class="col-8">
+          <input type="text" bind:value={playerName} name="playerName" id="playerName" class="form-control">
+        </div>
       </div>
 
-      <div>
+      <div class="form-group">
         <label for="gameId">Game ID</label>
-        <input type="text" bind:value={gameId} name="gameId" id="gameId">
+        <div class="col-9">
+          <input type="text" bind:value={gameId} name="gameId" id="gameId" class="form-control">
+        </div>
       </div>
 
-      <button on:click={goToLobby} type="button" class="btn btn-primary button-margin">Play</button>
-    </div>
+      <button on:click={goToLobby} type="button" class="btn top-bot-margin">Play</button>
+    </form>
   </div>
 </div>
