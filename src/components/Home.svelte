@@ -1,7 +1,4 @@
 <script>
-  import Textfield from '@smui/textfield';
-  import Button, { Label } from '@smui/button';
-
   import { createEventDispatcher } from 'svelte';
 
   export let playerName = '';
@@ -18,17 +15,27 @@
   }
 </script>
 
-<img src="/images/map-detouree.png" alt="map-image" id="map-image" />
+<div class="container-fluid">
 
-<Button on:click={goToGameCreation} variant="raised" class="width-fit-content large-button">
-  <Label>Create a new game</Label>
-</Button>
+  <img src="/images/map-detouree.png" alt="map-image" id="map-image" class="col-md-2"/>
 
-<div id="join-game-area">
-  <p>.. or join an existing game!</p>
-  <Textfield bind:value={playerName} label="Player name" />
-  <Textfield bind:value={gameId} label="Game ID" />
-  <Button on:click={goToLobby} variant="raised">
-    <Label>Play</Label>
-  </Button>
+  <div class="col-md-2 text-center">
+    <button on:click={goToGameCreation} type="button" class="btn btn-primary button-margin">Create a new game</button>
+
+    <div id="join-game-area">
+      <p>.. or join an existing game!</p>
+
+      <div>
+        <label for="playerName">Player name</label>
+        <input type="text" bind:value={playerName} name="playerName" id="playerName">
+      </div>
+
+      <div>
+        <label for="gameId">Game ID</label>
+        <input type="text" bind:value={gameId} name="gameId" id="gameId">
+      </div>
+
+      <button on:click={goToLobby} type="button" class="btn btn-primary button-margin">Play</button>
+    </div>
+  </div>
 </div>

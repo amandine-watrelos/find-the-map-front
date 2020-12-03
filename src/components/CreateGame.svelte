@@ -1,6 +1,4 @@
 <script>
-  import Button, { Label } from '@smui/button';
-  import Textfield from '@smui/textfield';
   import { createEventDispatcher } from 'svelte';
   import { onMount } from 'svelte';
   import GameController from '../controllers/GameController';
@@ -91,9 +89,7 @@
 
 </script>
 
-<Button on:click={back} variant="raised" class="back-button">
-  <Label>Back</Label>
-</Button>
+<button on:click={back} class="back-button">Back</button>
 
 <div class="game-creation-title">
   <h2>Game creation</h2>
@@ -102,36 +98,31 @@
 
 <div class="add-map">
   <div>
-    <Label>Image link</Label>
-    <Textfield on:keyup={isFormValid} bind:value={mapInput.imgUrl} />
+    <label for="imgUrl">Image link</label>
+    <input type="text" id="imgUrl" on:keyup={isFormValid} bind:value={mapInput.imgUrl} />
   </div>
 
   <div>
-    <Label>Position</Label>
-    <Textfield on:keyup={isFormValid} bind:value={mapInput.posX} class="position-input" onpaste="return false" variant="outlined"/>
-    <Textfield on:keyup={isFormValid} bind:value={mapInput.posY} class="position-input" onpaste="return false" variant="outlined" />
+    <label>Position</label>
+    <input type="text" on:keyup={isFormValid} bind:value={mapInput.posX} class="position-input" onpaste="return false"/>
+    <input type="text" on:keyup={isFormValid} bind:value={mapInput.posY} class="position-input" onpaste="return false"/>
   </div>
 
   {#if canAddMap == true}
-    <Button on:click={addMap} type="button" variant="raised">
-      <Label>Add map</Label>
-    </Button>
+    <button on:click={addMap}>Add map</button>
   {:else}
-    <Button variant="raised" disabled>
-      <Label>Add map</Label>
-    </Button>
+    <button disabled>Add map</button>
   {/if}
 </div>
 
-<Textfield textarea disabled bind:value={mapsList} label="Maps list" class="maps-list"/>
+<div>
+  <label type="text" for="mapsList">Maps list</label>
+  <textarea disabled bind:value={mapsList} id="mapsList" class="maps-list"></textarea>
+</div>
 
 {#if mapsList === ""}
-  <Button variant="raised" class="save-game-button" disabled>
-    <Label>Save the game</Label>
-  </Button>
+  <button class="save-game-button" disabled>Save the game</button>
 {:else}
-  <Button on:click={displayCode} variant="raised" class="save-game-button">
-    <Label>Save the game</Label>
-  </Button>
+  <button on:click={displayCode} class="save-game-button">Save the game</button>
 {/if}
 

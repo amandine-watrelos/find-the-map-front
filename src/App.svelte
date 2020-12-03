@@ -16,7 +16,7 @@
 
 <Navbar />
 
-<div class="wrapper">
+<div>
   {#if isCreateGame == true}
     <CreateGame on:goHome={goHome} />
   {:else}
