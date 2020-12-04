@@ -32,7 +32,7 @@ button:hover {
 	background-color: #efdd40!important;
 }
 
-#join-game-area > p {
+#join-game-area > p, #game-rules-intro {
 	font-weight: 600;
 }
 
@@ -51,6 +51,33 @@ button:hover {
 	.form-group {
 		display: flex;
 		align-items: center;
+	}
+
+	#game-rules-intro, #game-rules {
+		display: none;
+	}
+
+}
+
+@media (min-width: 577px) {
+
+	#map-image + div {
+		margin: auto 0;
+	}
+
+	#map-image {
+		width: 35vw;
+		margin: 6vh auto;
+		display: block;
+	}
+
+	div#img-container + div {
+		margin: auto;
+	}
+
+	#game-rules {
+		width: 45vw;
+		margin-bottom: 5vh;
 	}
 
 }
