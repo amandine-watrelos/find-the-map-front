@@ -89,40 +89,42 @@
 
 </script>
 
-<button on:click={back} class="back-button">Back</button>
-
-<div class="game-creation-title">
-  <h2>Game creation</h2>
-  <p>Add some maps with the link to the image that you hosted before, and the position of the map.</p>
-</div>
-
-<div class="add-map">
-  <div>
-    <label for="imgUrl">Image link</label>
-    <input type="text" id="imgUrl" on:keyup={isFormValid} bind:value={mapInput.imgUrl} />
+<div class="container-fluid" id="game-creation-container">
+  <div id="game-creation-header">
+    <button on:click={back} type="button" class="btn col-2">Back</button>
+    <h4 class="d-inline offset-1 col-4">Game creation</h4>
   </div>
 
-  <div>
-    <label>Position</label>
-    <input type="text" on:keyup={isFormValid} bind:value={mapInput.posX} class="position-input" onpaste="return false"/>
-    <input type="text" on:keyup={isFormValid} bind:value={mapInput.posY} class="position-input" onpaste="return false"/>
+  <p class="text-justify">Add some maps with the link to the image that you hosted before, and the position of the map.</p>
+
+  <form>
+    <div class="form-group">
+      <label for="img-url" class="col-4">Image link</label>
+      <input type="text" id="img-url" class="form-control col-7" on:keyup={isFormValid} bind:value={mapInput.imgUrl} />
+    </div>
+
+    <div class="form-group">
+      <label class="col-4">Position</label>
+      <input type="text" on:keyup={isFormValid} bind:value={mapInput.posX} onpaste="return false" class="form-control col-2"/>
+      <input type="text" on:keyup={isFormValid} bind:value={mapInput.posY} onpaste="return false" class="form-control col-2 offset-1"/>
+    </div>
+
+    {#if canAddMap == true}
+      <button on:click={addMap} type="button" class="btn centered-button">Add map</button>
+    {:else}
+      <button disabled type="button" class="btn centered-button">Add map</button>
+    {/if}
+  </form>
+
+  <div class="form-group" id="maps-textarea">
+    <label type="text" for="maps-list" class="col-4">Maps list</label>
+    <textarea disabled bind:value={mapsList} id="maps-list" class="form-control col-7"></textarea>
   </div>
 
-  {#if canAddMap == true}
-    <button on:click={addMap}>Add map</button>
+  {#if mapsList === ""}
+    <button disabled type="button" class="btn centered-button">Save the game</button>
   {:else}
-    <button disabled>Add map</button>
+    <button on:click={displayCode} type="button" class="btn centered-button">Save the game</button>
   {/if}
 </div>
-
-<div>
-  <label type="text" for="mapsList">Maps list</label>
-  <textarea disabled bind:value={mapsList} id="mapsList" class="maps-list"></textarea>
-</div>
-
-{#if mapsList === ""}
-  <button class="save-game-button" disabled>Save the game</button>
-{:else}
-  <button on:click={displayCode} class="save-game-button">Save the game</button>
-{/if}
 

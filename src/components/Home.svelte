@@ -33,16 +33,16 @@
         <p>Join an existing game :</p>
 
         <div class="form-group">
-          <label for="playerName">Player name</label>
+          <label for="player-name">Player name</label>
           <div class="col-8 col-md-4 d-md-inline-block">
-            <input type="text" bind:value={playerName} name="playerName" id="playerName" class="form-control">
+            <input type="text" bind:value={playerName} name="playerName" id="player-name" class="form-control">
           </div>
         </div>
 
         <div class="form-group">
-          <label for="gameId">Game ID</label>
+          <label for="game-id">Game ID</label>
           <div class="col-9 col-md-4 d-md-inline-block">
-            <input type="text" bind:value={gameId} name="gameId" id="gameId" class="form-control">
+            <input type="text" bind:value={gameId} name="gameId" id="game-id" class="form-control">
           </div>
         </div>
 

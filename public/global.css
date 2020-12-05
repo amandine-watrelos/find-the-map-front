@@ -57,6 +57,27 @@ button:hover {
 		display: none;
 	}
 
+	.centered-button {
+		margin: 4vh auto;
+		display: block;
+	}
+
+	#maps-textarea {
+		margin-top: 5vh;
+	}
+
+	#maps-textarea textarea {
+		height: 15vh;
+	}
+
+	#game-creation-header {
+		margin: 3vh 0 5vh 0;
+	}
+
+	#game-creation-header + p {
+		margin-bottom: 7vh;
+	}
+
 }
 
 @media (min-width: 577px) {
